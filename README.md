@@ -3,17 +3,17 @@ Solution
 
 This project contain solution to the described [PII Problem](AtHomeCodingTest-ThePIIProblem.pdf)
 
-###Run unit test
+### Run unit test
 `$ ./gradlew clean test`
 
-###Setup
+### Setup
 `$ export PATH=$PATH:.`
 
-###Run program
+### Run program
 
 `$ Solution < At-Home-Coding-Test-inputfile.txt > output.txt`
 
-###Sample output
+### Sample output
 
 ```
 {
