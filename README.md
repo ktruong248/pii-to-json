@@ -3,6 +3,10 @@ Solution
 
 This project contain solution to the described [PII Problem](AtHomeCodingTest-ThePIIProblem.pdf)
 
+### Prerequisites
+
+* JDK 8
+
 ### Run unit test
 `$ ./gradlew clean test`
 
