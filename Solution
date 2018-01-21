@@ -3,6 +3,8 @@
 # This allow Solution script to be call with simple standard in and standard out redirect
 STDIN=$(cat)
 
+mkdir -p build/tmp
+
 ./gradlew clean test shadowJar > build/tmp/shadowJarBuild.log
 
 MAIN_JAR="build/libs/ThinkHR-1.0-SNAPSHOT.jar"
