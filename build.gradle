@@ -1,10 +1,25 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.2' apply false
+}
+
+defaultTasks 'clean', 'test'
+
 group 'thinkhr'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
-apply plugin: 'application'
-
 sourceCompatibility = 1.8
+
+mainClassName = 'App'
+
+// work around bug with shadowJar 2.0.2 with gradle 4.4.x
+//
+// Task :shadowJar
+// A problem was found with the configuration of task ':shadowJar'. Registering invalid inputs and outputs via
+// TaskInputs and TaskOutputs methods has been deprecated and is scheduled to be removed in Gradle 5.0.
+// - No value has been specified for property 'mainClassName'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 repositories {
     mavenCentral()
@@ -19,9 +34,8 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.2.21'
 }
 
-mainClassName = 'App'
 
-run{
-    standardInput = System.in
-    standardOutput = System.out
+shadowJar {
+    classifier = null
+    dependsOn test
 }

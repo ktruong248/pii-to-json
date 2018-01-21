@@ -1,4 +1,4 @@
-import models.ParsedResult;
+import models.ProcessedResult;
 import models.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,8 @@ import static org.mockito.Mockito.when;
 public class PersonalIdentifyInformationProcessorTest {
 
     @Mock private Comparator<Person> comparator;
-    @Mock private PersonParser parser;
+    @Mock private PersonConverter converter;
+    @Mock private PersonWriter writer;
     @Mock private Person sam;
     @Mock private Person cameron;
 
@@ -28,23 +29,25 @@ public class PersonalIdentifyInformationProcessorTest {
 
     @Before
     public void setup() {
-        processor = new PersonalIdentifyInformationProcessor(parser, comparator);
+        processor = new PersonalIdentifyInformationProcessor(converter, comparator, writer);
     }
 
     @Test
-    public void shouldContinueProcessWhenEncounterError() {
+    public void shouldContinueProcessWhenEncounterErrorAndCallWriterToSaveProcessedResult() {
         String datas = "Sam T., Washington, 85360, 353 791 6380, purple\n" +
                 "Cameron, Kathy, (613)-658-9293, red, 143123121\n" +
                 "Jamie Stevenson, yellow, 84880, 028 164 6574\n";
 
-        when(parser.parse("Sam T., Washington, 85360, 353 791 6380, purple")).thenReturn(sam);
-        when(parser.parse("Cameron, Kathy, (613)-658-9293, red, 143123121"))
+        when(converter.parse("Sam T., Washington, 85360, 353 791 6380, purple")).thenReturn(sam);
+        when(converter.parse("Cameron, Kathy, (613)-658-9293, red, 143123121"))
                 .thenThrow(new IllegalArgumentException("invalid phone number"));
-        when(parser.parse("Jamie Stevenson, yellow, 84880, 028 164 6574")).thenReturn(cameron);
+        when(converter.parse("Jamie Stevenson, yellow, 84880, 028 164 6574")).thenReturn(cameron);
 
         inputStream = new ByteArrayInputStream(datas.getBytes());
 
-        ParsedResult result = processor.process(inputStream);
+        ProcessedResult result = processor.process(inputStream);
+        //verify the writer call with the same object as the return
+        verify(writer).save(result);
         assertThat(result.getErrors()).containsExactly(1);
         assertThat(result.getEntries()).containsExactly(sam, cameron);
     }
@@ -54,12 +57,12 @@ public class PersonalIdentifyInformationProcessorTest {
         String datas = "Sam T., Washington, 85360, 353 791 6380, purple\n" +
                 "Jamie Stevenson, yellow, 84880, 028 164 6574\n";
 
-        when(parser.parse("Sam T., Washington, 85360, 353 791 6380, purple")).thenReturn(sam);
-        when(parser.parse("Jamie Stevenson, yellow, 84880, 028 164 6574")).thenReturn(cameron);
+        when(converter.parse("Sam T., Washington, 85360, 353 791 6380, purple")).thenReturn(sam);
+        when(converter.parse("Jamie Stevenson, yellow, 84880, 028 164 6574")).thenReturn(cameron);
 
         inputStream = new ByteArrayInputStream(datas.getBytes());
 
-        ParsedResult result = processor.process(inputStream);
+        ProcessedResult result = processor.process(inputStream);
         assertThat(result.getErrors()).isEmpty();
         verify(comparator).compare(notNull(), notNull());
     }

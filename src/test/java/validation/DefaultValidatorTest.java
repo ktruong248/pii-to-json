@@ -27,7 +27,7 @@ public class DefaultValidatorTest {
 
     @Test
     public void shouldReturnTrueForValidZipCode() {
-        assertThat(validator.isZipCode("0123456789")).isTrue();
+        assertThat(validator.isZipCode("12345")).isTrue();
     }
 
     @Test
@@ -41,13 +41,18 @@ public class DefaultValidatorTest {
     }
 
     @Test
-    public void shouldReturnTrueForValidPhoneNumber() {
-        assertThat(validator.isValidPhoneNumber("245 345 5333")).isTrue();
+    public void shouldReturnTrueForPhoneNumberWithTenDigitsAndSpaceInBetween() {
+        assertThat(validator.isValidPhoneNumber("045 345 5333")).isTrue();
+    }
+
+    @Test
+    public void shouldReturnTrueForPhoneNumberWithDashAndParentheisAroundAreaCode() {
+        assertThat(validator.isValidPhoneNumber("(245)-345-5333")).isTrue();
     }
 
     @Test
     public void shouldReturnInvalidPhoneNumberWhenExceed10Digits() {
-        assertThat(validator.isValidPhoneNumber("245 345 5333 5")).isFalse();
+        assertThat(validator.isValidPhoneNumber("245 345 53335")).isFalse();
     }
 
     @Test

@@ -12,14 +12,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PersonParserTest {
+public class PersonConverterTest {
 
     @Mock private Validator validator;
-    private PersonParser parser;
+    private PersonConverter parser;
 
     @Before
     public void setUp() {
-        parser = new PersonParser(validator);
+        parser = new PersonConverter(validator);
     }
 
     @Test

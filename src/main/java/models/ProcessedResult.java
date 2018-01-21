@@ -6,11 +6,11 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ParsedResult {
+public class ProcessedResult {
     private List<Person> entries;
     private List<Integer> errors;
 
-    public ParsedResult() {
+    public ProcessedResult() {
         entries = new LinkedList<>();
         errors = new LinkedList<>();
     }

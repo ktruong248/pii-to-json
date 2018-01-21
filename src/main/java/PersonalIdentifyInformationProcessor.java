@@ -1,4 +1,4 @@
-import models.ParsedResult;
+import models.ProcessedResult;
 import models.Person;
 
 import java.io.*;
@@ -7,25 +7,34 @@ import java.util.logging.Logger;
 
 public class PersonalIdentifyInformationProcessor {
     private static final Logger logger = Logger.getLogger("PersonalIdentifyInformationProcessor");
-    private final PersonParser parser;
+    private final PersonConverter converter;
     private final Comparator<Person> personComparator;
+    private final PersonWriter writer;
 
-    PersonalIdentifyInformationProcessor(PersonParser parser, Comparator<Person> personComparator) {
-        this.parser = parser;
+    PersonalIdentifyInformationProcessor(PersonConverter converter, Comparator<Person> personComparator,
+                                         PersonWriter personWriter) {
+        this.converter = converter;
         this.personComparator = personComparator;
+        this.writer = personWriter;
     }
 
     /**
      * processor that will take in InputStream and perform normalize each line into a Person object that contains
-     * firstName,lastName, phoneNumber, favorite color, zipcode.
+     * firstName,lastName, phoneNumber, favorite color, zipcode and then delegate to the writer to persist the result
      *
      * @param inputStream
-     * @return the ParsedResult with valid entries and the failed to parsed line number
+     * @return the ProcessedResult with valid entries and the failed to parsed line number
      */
-    public ParsedResult process(InputStream inputStream) {
+    public ProcessedResult process(InputStream inputStream) {
+        ProcessedResult parsedResult = processInputStream(inputStream);
+        writer.save(parsedResult);
+        return parsedResult;
+    }
+
+    private ProcessedResult processInputStream(InputStream inputStream) {
         InputStreamReader isReader = new InputStreamReader(inputStream);
         BufferedReader bufReader = new BufferedReader(isReader);
-        ParsedResult result = new ParsedResult();
+        ProcessedResult result = new ProcessedResult();
 
         int lineNumber = 0;
         try {
@@ -34,7 +43,7 @@ public class PersonalIdentifyInformationProcessor {
             while (!done) {
                 if ((inputStr = bufReader.readLine()) != null) {
                     try {
-                        Person parse = parser.parse(inputStr);
+                        Person parse = converter.parse(inputStr);
                         result.add(parse);
                     } catch (Exception e) {
                         result.addError(lineNumber);
@@ -56,7 +65,7 @@ public class PersonalIdentifyInformationProcessor {
         return result;
     }
 
-    private void sortEntries(ParsedResult result) {
+    private void sortEntries(ProcessedResult result) {
         result.sortEntries(personComparator);
     }
 

@@ -3,11 +3,21 @@ import exception.ParserFailureException;
 import models.Person;
 import validation.Validator;
 
-public class PersonParser {
+/**
+ * Responsible for taking a string encoded person data and transform it into normalized Person object. This can handle
+ * the following format:
+ *
+ * LastName, FirstName, (703)-711-0996, Blue, 11013
+ * FirstName LastName, Purple, 14537, 713 905 0383
+ * FirstName, LastName, 12023, 636 121 1111, Yellow
+ *
+ * For simplicity, a line is invalid if its phone number does not contain the proper number of digits.
+ */
+public class PersonConverter {
     private static final String PERSON_DELIMETER = ",";
     private final Validator validator;
 
-    PersonParser(Validator validator) {
+    PersonConverter(Validator validator) {
        this.validator = validator;
     }
 

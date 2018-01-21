@@ -1,7 +1,8 @@
 import models.LastNameFirstNameComparator;
-import models.ParsedResult;
 import utils.Json;
 import validation.DefaultValidator;
+
+import java.io.PrintStream;
 
 /**
  * Main program that will read file input stream then parse and write to standard output stream.
@@ -9,12 +10,12 @@ import validation.DefaultValidator;
  */
 public class App {
     public static void main(String argv[]) {
-        PersonParser parser = new PersonParser(new DefaultValidator());
+        PersonConverter converter = new PersonConverter(new DefaultValidator());
         LastNameFirstNameComparator comparator = new LastNameFirstNameComparator();
+        PersonWriter writer = new JsonPersonWriter(new PrintStream(System.out), Json.instance());
 
-        PersonalIdentifyInformationProcessor processor = new PersonalIdentifyInformationProcessor(parser, comparator);
-
-        ParsedResult result = processor.process(System.in);
-        System.out.println(Json.instance().pretty(result));
+        PersonalIdentifyInformationProcessor processor = new PersonalIdentifyInformationProcessor(converter, comparator,
+                writer);
+        processor.process(System.in);
     }
 }

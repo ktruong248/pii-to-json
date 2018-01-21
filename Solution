@@ -1,3 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
-./gradlew -q run $@
+# This allow Solution script to be call with simple standard in and standard out redirect
+STDIN=$(cat)
+
+./gradlew clean test shadowJar > build/tmp/shadowJarBuild.log
+
+MAIN_JAR="build/libs/ThinkHR-1.0-SNAPSHOT.jar"
+MAIN_CLASSNAME="App"
+
+echo "$STDIN" | java -cp $MAIN_JAR $MAIN_CLASSNAME
