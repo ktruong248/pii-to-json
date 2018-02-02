@@ -7,7 +7,7 @@ mkdir -p build/tmp
 
 ./gradlew clean test shadowJar > build/tmp/shadowJarBuild.log
 
-MAIN_JAR="build/libs/ThinkHR-1.0-SNAPSHOT.jar"
+MAIN_JAR="build/libs/pii-to-json-1.0-SNAPSHOT.jar"
 MAIN_CLASSNAME="App"
 
 echo "$STDIN" | java -cp $MAIN_JAR $MAIN_CLASSNAME

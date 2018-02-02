@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ProcessedResult {
     private List<Person> entries;
-    private List<Integer> errors;
+    private List<Long> errors;
 
     public ProcessedResult() {
         entries = new LinkedList<>();
@@ -19,7 +19,7 @@ public class ProcessedResult {
         entries.add(person);
     }
 
-    public void addError(int failedLineNumber) {
+    public void addError(long failedLineNumber) {
         errors.add(failedLineNumber);
     }
 
@@ -27,7 +27,7 @@ public class ProcessedResult {
         return entries;
     }
 
-    public List<Integer> getErrors() {
+    public List<Long> getErrors() {
         return errors;
     }
 
@@ -35,5 +35,4 @@ public class ProcessedResult {
     public void sortEntries(Comparator<Person> personComparator) {
         getEntries().sort(personComparator);
     }
-
 }

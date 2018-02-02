@@ -7,7 +7,7 @@ import com.google.common.collect.Ordering;
 import java.util.Comparator;
 
 /**
- * Simple sorting (last name, first name) in ascending alphabetical order
+ * Simple sorting (last name follow by first name) in ascending alphabetical order
  */
 public class LastNameFirstNameComparator implements Comparator<Person> {
     @Override

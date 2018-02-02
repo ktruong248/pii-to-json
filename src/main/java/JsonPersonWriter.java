@@ -4,7 +4,7 @@ import utils.Json;
 import java.io.PrintStream;
 
 /**
- * Simple implementation that will convert the @ParseResult into json and write to the stream
+ * Simple implementation that will convert the @ProcessedResult into json string then write the string to the stream
  */
 public class JsonPersonWriter implements PersonWriter {
 

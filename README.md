@@ -1,7 +1,7 @@
 Solution
 ===================
 
-This project contain solution to the described [PII Problem](AtHomeCodingTest-ThePIIProblem.pdf)
+This project contain solution to the described [PII Problem](ThePIIProblem.pdf)
 
 ### Prerequisites
 
@@ -15,7 +15,7 @@ This project contain solution to the described [PII Problem](AtHomeCodingTest-Th
 
 ### Run program
 
-`$ Solution < At-Home-Coding-Test-inputfile.txt > output.txt`
+`$ Solution < Test-inputfile.txt > output.txt`
 
 ### Sample output
 
